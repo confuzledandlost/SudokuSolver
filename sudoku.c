@@ -61,15 +61,26 @@ int main(int argc, char *argv[])
 bool checker(int* nums[]) {
 
 	// Setup an array of booleans
-	bool* exists[9];
+	bool* exists[9] = false;
 
 	// Loop through input array and check against exists array
 	for (int i = 0; i < 9; i++) {
 
-		// Check if current value is true or false in  exists array
+		// Hold the current number for safe-keeping (and add 1)
 		int curr = nums[i] + 1;
+
+		// Check if number is in bounds
+		if ((curr < 1) || (curr > 9)) {
+
+			// Return false if it isn't
+			return false;
+
+		}
+		
+		// Compare number against exists array
 		if (exists[curr] == false) {
-			// Flip boolean to true
+
+			// Flip boolean to true if it's false
 			exists[curr] == true;
 		}
 		// If the value is already true, then return false
