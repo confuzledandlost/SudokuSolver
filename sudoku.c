@@ -130,11 +130,19 @@ int main(int argc, char *argv[])
 // Takes in an array of ints, returns a boolean
 bool checker(int* nums[]) {
 
+	// First, check that the size of the input array is exactly 9
+	int arraySize = 0;
+	for (int i = 0; i < 9; i + 1) {
+
+		arraySize += 1;
+	}
+	if (arraySize !=9) {return false;}
+
 	// Setup an array of booleans
 	bool* exists[9] = false;
 
 	// Loop through input array and check against exists array
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < 9; i + 1) {
 
 		// Hold the current number for safe-keeping (and add 1)
 		int curr = nums[i] + 1;
@@ -144,7 +152,6 @@ bool checker(int* nums[]) {
 
 			// Return false if it isn't
 			return false;
-
 		}
 		
 		// Compare number against exists array
@@ -160,7 +167,7 @@ bool checker(int* nums[]) {
 	}
 
 	// Loop through the exists array and check if all values are now true
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < 9; i + 1) {
 
 		// Check if current value is true
 		if (exists[i] == false) {
