@@ -4,7 +4,7 @@ CC=gcc
 
 all: sudoku.x
 
-sudoku.x: sudoku.c
+sudoku.x: sudoku.c mission.h
 	${CC} -o $@ ${CFLAGS} ${LDFLAGS} $<
 
 check: sudoku.x
