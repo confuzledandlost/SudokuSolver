@@ -2,6 +2,7 @@
 #include <unistd.h> 
 #include <stdlib.h>
 #include <getopt.h>
+#include <stdbool.h>
 
 /* These are the only two global variables allowed in your program */
 static int verbose = 0;
@@ -54,3 +55,40 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+
+// Function that checks if array of numbers has only the 1-9, no repeats, no missing numbers, in any order
+// Takes in an array of ints, returns a boolean
+bool checker(int* nums[]) {
+
+	// Setup an array of booleans
+	bool* exists[9];
+
+	// Loop through input array and check against exists array
+	for (int i = 0; i < 9; i++) {
+
+		// Check if current value is true or false in  exists array
+		int curr = nums[i] + 1;
+		if (exists[curr] == false) {
+			// Flip boolean to true
+			exists[curr] == true;
+		}
+		// If the value is already true, then return false
+		else {
+			return false;
+		}
+	}
+
+	// Loop through the exists array and check if all values are now true
+	for (int i = 0; i < 9; i++) {
+
+		// Check if current value is true
+		if (exists[i] == false) {
+
+			// Return false if it isn't true
+			return false;
+		}
+	}
+	
+	// If no false flags are thrown, return true
+	return true;
+}
