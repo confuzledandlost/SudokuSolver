@@ -1,0 +1,172 @@
+==> threads/Grading <==
+# Percentage of the testing point total designated for each set of
+# tests, from the assignment Rubric
+
+14.0%	sudoku/Rubric.valid-threads
+14.0%	sudoku/Rubric.valid-fork
+10.00%	sudoku/Rubric.invalid-row-threads
+10.00%	sudoku/Rubric.invalid-row-fork
+10.00%	sudoku/Rubric.invalid-column-threads
+10.00%	sudoku/Rubric.invalid-column-fork
+10.00%	sudoku/Rubric.invalid-subgrid-threads
+10.00%	sudoku/Rubric.invalid-subgrid-fork
+6.00%	sudoku/Rubric.leaks
+6.00%	sudoku/Rubric.reaps
+
+
+==> sudoku/Rubric.valid-threads <==
+Accurately identifies a valid Sudoku without --fork
+
+4   valid-threaded-1-sudoku-stdout
+3   valid-threaded-2-sudoku-stdout
+1   valid-threaded-1-sudoku-exit-code
+1   valid-threaded-1-sudoku-no-stderror
+
+# timing bugs
+5   valid-threaded-1-sudoku-multiple-runs
+
+# whitespace examples
+1   valid-threaded-3-sudoku-exit-code
+1   valid-threaded-3-sudoku-no-stderror
+1   valid-threaded-3-sudoku-stdout
+1   valid-threaded-4-sudoku-exit-code
+1   valid-threaded-4-sudoku-no-stderror
+1   valid-threaded-4-sudoku-stdout
+
+
+==> sudoku/Rubric.invalid-row-threads <==
+Invalid Sudoku: accurately identifies each row error without --fork
+
+5   invalid-threaded-row-1a-sudoku-output
+5   invalid-threaded-row-1b-sudoku-number
+1   invalid-threaded-row-1c-sudoku-details
+1   invalid-threaded-row-1d-sudoku-details
+1   invalid-threaded-row-2-sudoku-output
+1   invalid-threaded-row-3-sudoku-output
+1   invalid-threaded-row-4-sudoku-output
+
+1   invalid-threaded-row-5-sudoku-out-of-bounds
+
+
+==> sudoku/Rubric.invalid-column-threads <==
+Invalid Sudoku: accurately identifies each column error without --fork
+
+5   invalid-threaded-col-1a-sudoku-output
+5   invalid-threaded-col-1b-sudoku-number
+1   invalid-threaded-col-1c-sudoku-details
+1   invalid-threaded-col-1d-sudoku-details
+1   invalid-threaded-col-2-sudoku-output
+1   invalid-threaded-col-3-sudoku-output
+1   invalid-threaded-col-4-sudoku-output
+
+1   invalid-threaded-col-5-sudoku-out-of-bounds
+
+
+==> sudoku/Rubric.invalid-subgrid-threads <==
+Invalid Sudoku: accurately identifies each subgrid error without --fork
+
+5   invalid-threaded-subgrid-1a-sudoku-output
+10  invalid-threaded-subgrid-1b-sudoku-number
+1   invalid-threaded-subgrid-1c-sudoku-output
+1   invalid-threaded-subgrid-1d-sudoku-output
+1   invalid-threaded-subgrid-1e-sudoku-output
+1   invalid-threaded-subgrid-1f-sudoku-output
+1   invalid-threaded-subgrid-1g-sudoku-output
+1   invalid-threaded-subgrid-1h-sudoku-output
+1   invalid-threaded-subgrid-1i-sudoku-output
+1   invalid-threaded-subgrid-1j-sudoku-output
+1   invalid-threaded-subgrid-1k-sudoku-output
+1   invalid-threaded-subgrid-2-sudoku-output
+1   invalid-threaded-subgrid-3-sudoku-output
+1   invalid-threaded-subgrid-4-sudoku-output
+
+1   invalid-threaded-subgrid-5-sudoku-out-of-bounds
+
+
+==> sudoku/Rubric.valid-fork <==
+Accurately identifies a valid Sudoku with --fork
+
+4   valid-fork-1-sudoku-stdout
+3   valid-fork-2-sudoku-stdout
+1   valid-fork-1-sudoku-exit-code
+1   valid-fork-1-sudoku-no-stderror
+
+# timing bugs
+5   valid-fork-1-sudoku-multiple-runs
+
+# whitespace examples
+1   valid-fork-3-sudoku-exit-code
+1   valid-fork-3-sudoku-no-stderror
+1   valid-fork-3-sudoku-stdout
+1   valid-fork-4-sudoku-exit-code
+1   valid-fork-4-sudoku-no-stderror
+1   valid-fork-4-sudoku-stdout
+
+
+==> sudoku/Rubric.invalid-row-fork <==
+Invalid Sudoku: accurately identifies each row error with --fork
+
+5   invalid-fork-row-1a-sudoku-output
+5   invalid-fork-row-1b-sudoku-number
+1   invalid-fork-row-1c-sudoku-details
+1   invalid-fork-row-1d-sudoku-details
+1   invalid-fork-row-2-sudoku-output
+1   invalid-fork-row-3-sudoku-output
+1   invalid-fork-row-4-sudoku-output
+
+1   invalid-fork-row-5-sudoku-out-of-bounds
+
+
+==> sudoku/Rubric.invalid-column-fork <==
+Invalid Sudoku: accurately identifies each column error with --fork
+
+5   invalid-fork-col-1a-sudoku-output
+5   invalid-fork-col-1b-sudoku-number
+1   invalid-fork-col-1c-sudoku-details
+1   invalid-fork-col-1d-sudoku-details
+1   invalid-fork-col-2-sudoku-output
+1   invalid-fork-col-3-sudoku-output
+1   invalid-fork-col-4-sudoku-output
+
+1   invalid-fork-col-5-sudoku-out-of-bounds
+
+
+==> sudoku/Rubric.invalid-subgrid-fork <==
+Invalid Sudoku: accurately identifies each subgrid error with --fork
+
+5   invalid-fork-subgrid-1a-sudoku-output
+10  invalid-fork-subgrid-1b-sudoku-number
+1   invalid-fork-subgrid-1c-sudoku-output
+1   invalid-fork-subgrid-1d-sudoku-output
+1   invalid-fork-subgrid-1e-sudoku-output
+1   invalid-fork-subgrid-1f-sudoku-output
+1   invalid-fork-subgrid-1g-sudoku-output
+1   invalid-fork-subgrid-1h-sudoku-output
+1   invalid-fork-subgrid-1i-sudoku-output
+1   invalid-fork-subgrid-1j-sudoku-output
+1   invalid-fork-subgrid-1k-sudoku-output
+1   invalid-fork-subgrid-2-sudoku-output
+1   invalid-fork-subgrid-3-sudoku-output
+1   invalid-fork-subgrid-4-sudoku-output
+
+1   invalid-fork-subgrid-5-sudoku-out-of-bounds
+
+
+==> sudoku/Rubric.leaks <==
+Destroys all threads and deletes all dynamically allocated memory
+
+0   sanity-check-threads
+2   memory-leak-1-threaded-valid
+1   memory-leak-2-threaded-invalid
+1   memory-leak-3-fork-valid
+1   memory-leak-4-fork-invalid
+
+
+==> sudoku/Rubric.reaps <==
+Reaps all child processes
+
+0   sanity-check-fork
+1   reap-process-1-fork-valid
+1   reap-process-2-fork-invalid
+
+
