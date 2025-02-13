@@ -1,7 +1,3 @@
-//
-// Created by Sean Belingheri on 2/13/25.
-//
-
 #ifndef SUDOKUSOLVER_CHECKER_H
 #define SUDOKUSOLVER_CHECKER_H
 
@@ -19,14 +15,17 @@ bool checker(int* nums[]) {
     }
     if (arraySize !=9) {return false;}
 
-    // Setup an array of booleans
-    bool* exists[9] = false;
+    // Setup an array of booleans to false
+    bool exists[9];
+	for (int i = 0; i < 9; i++) {
+	    exists[i] = false;
+	}
 
     // Loop through input array and check against exists array
     for (int i = 0; i < 9; i += 1) {
 
         // Hold the current number for safe-keeping (and add 1)
-        int curr = nums[i] + 1;
+        int curr = *nums[i] + 1;
 
         // Check if number is in bounds
         if ((curr < 1) || (curr > 9)) {
