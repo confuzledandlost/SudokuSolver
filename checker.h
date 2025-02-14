@@ -9,11 +9,12 @@ bool checker(int* nums[]) {
 
     // First, check that the size of the input array is exactly 9
     int arraySize = 0;
-    for (int i = 0; i < 9; i + 1) {
-
+    for (int i = 0; i < 9; i++) {
         arraySize += 1;
     }
-    if (arraySize !=9) {return false;}
+    if (arraySize !=9) {
+        return false;
+    }
 
     // Setup an array of booleans to false
     bool exists[9];
