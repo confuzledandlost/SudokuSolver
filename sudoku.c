@@ -4,6 +4,10 @@
 #include <getopt.h>
 #include <pthread.h>
 #include "mission.h"
+#include "checker.h"
+#include "rowGrabber.h"
+#include "columnGrabber.h"
+#include "gridGrabber.h"
 #include <stdbool.h>
 
 /* These are the only two global variables allowed in your program */

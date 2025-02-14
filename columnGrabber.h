@@ -7,7 +7,7 @@
 #include "checker.h"
 
 
-// Function that evaluates if a column in sudoku
+// Function that grabs numbers from an array in a "column"
 // Takes in a Mission struct pointer that has an int ID and an array of ints, returns a boolean
 bool columnGrabber(struct Mission* a1) {
 
@@ -16,17 +16,17 @@ bool columnGrabber(struct Mission* a1) {
     int colIndex = a1->id;
 
     // Go through the Mission->array
-    for(int i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++) {
 
-        colVals[i] = a1->array[colIndex];    // Grab the next value
-        colIndex *= 9;    // Increment our index
+        //Grab the proper value from the Mission->array and store it in colVals
+        colVals[i] = a1->array[i * 9 + colIndex];
     }
 
     // Pass the column values to the checker function
     if(checker(colVals)) {
         return true;    // If it checks out, return true
     } else {
-        printf("Row %d doesn't have the required values \n", a1->id);
+        printf("Column %d doesn't have the required values \n", a1->id);
         return false;    // If not, return false
     }
 }

@@ -4,7 +4,7 @@ CC=gcc
 
 all: sudoku.x
 
-sudoku.x: sudoku.c mission.h checker.h rowGrabber.h columnGrabber.h
+sudoku.x: sudoku.c mission.h checker.h rowGrabber.h columnGrabber.h gridGrabber.h
 	${CC} -o $@ ${CFLAGS} ${LDFLAGS} $<
 
 check: sudoku.x
