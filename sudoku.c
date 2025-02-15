@@ -91,35 +91,34 @@ int main(int argc, char *argv[])
     }
   }
 
-  // //columns
-  // for (int i = 0; i < 9; i = i + 1) {
-  //   mission[i+9].array = solution;
-  //   mission[i+9].id = i;
-  //   mission[i+9].msg = NULL;
-  //   if (use_fork) {
+  //columns
+  for (int i = 0; i < 9; i = i + 1) {
+     mission[i+9].array = solution;
+     mission[i+9].id = i;
+     mission[i+9].msg = NULL;
+     if (use_fork) {
+     }
+     else {
+       pthread_create(&thread[i+9], NULL, *columnGrabber, (void*) &mission[i+9]);
+     }
+  }
 
-  //   }
-  //   else {
-  //     pthread_create(&thread[i+9], NULL, *columnGrabber, (void*) &mission[i+9]);
-  //   }
-  // }
+  //columns
+  for (int i = 0; i < 9; i = i + 1) {
+     mission[i+18].array = solution;
+     mission[i+18].id = i;
+     mission[i+18].msg = NULL;
+     if (use_fork) {
 
-  // //columns
-  // for (int i = 0; i < 9; i = i + 1) {
-  //   mission[i+18].array = solution;
-  //   mission[i+18].id = i;
-  //   mission[i+18].msg = NULL;
-  //   if (use_fork) {
-
-  //   }
-  //   else {
-  //     pthread_create(&thread[i+18], NULL, *gridGrabber, (void*) &mission[i+18]);
-  //   }
-  // }
+     }
+     else {
+       pthread_create(&thread[i+18], NULL, *gridGrabber, (void*) &mission[i+18]);
+     }
+   }
 
   //collect answers
   int valid = 1;
-  for (int i = 0; i < 9; i = i + 1) {
+  for (int i = 0; i < 27; i = i + 1) {
     if (use_fork) {
 
     }
@@ -137,6 +136,8 @@ int main(int argc, char *argv[])
   //tell the user whether they're an idiot
   if (valid) {
     printf("The input is a valid Sudoku.\n");
+  } else{
+      printf("The input is not a valid Sudoku.\n");
   }
 
   return 0;
