@@ -10,7 +10,10 @@
 #include "mission.h"
 #include "checker.h"
 
-bool rowGrabber(struct Mission* a1) {
+//has to be a void* function(void*)
+void* rowGrabber(void* ptr) {
+    //cast the pointer so we can access the mission data
+    struct Mission* a1 = (struct Mission*) ptr;
     int rowVals[9];
     int rowIndex = a1->id * 9;
 
@@ -18,12 +21,21 @@ bool rowGrabber(struct Mission* a1) {
         rowVals[i] = a1->array[rowIndex];
         rowIndex++;
     }
-    if(checker(rowVals)) {
-        return true;
-    } else {
-        printf("Row %d doesn't have the required values \n", a1->id);
+
+    //temporarily removed the call to checker cause it causes crashes rn
+    // if(checker(rowVals)) {
+        // return true;
+    // } else {
+
+        //this is how you write a message into the mission struct
+        //calculate required size of the buffer (add one for the null terminator)
+        size_t bufSize = snprintf(NULL, 0, "Row %d doesn't have the required values", a1->id) + 1;
+        //actually allocate that memory
+        a1->msg = malloc(bufSize);
+        //write the message in
+        sprintf(a1->msg, "Row %d doesn't have the required values", a1->id);
         return false;
-    }
+    // }
 }
 
 #endif //SUDOKUSOLVER_ROWGRABBER_H
