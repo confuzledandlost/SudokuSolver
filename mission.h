@@ -4,6 +4,7 @@
 struct Mission {
   int id;
   int* array;
+  char* msg;
 };
 
 #endif

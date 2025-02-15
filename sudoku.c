@@ -65,9 +65,15 @@ int main(int argc, char *argv[])
   //read all the input
   for (int i = 0; i < BOARDSIZE; i = i + 1) {
     scanf("%d", &solution[i]);
-    // printf("%d\n", solution[i]);
-  }
 
+    // printf("%d ", solution[i]);
+    // if ((i + 1) % 27 == 0)
+    //   printf("\n");
+    // if ((i+1) % 9 == 0)
+    //   printf("\n");
+    // else if ((i+1) % 3 == 0)
+    //   printf(" ");
+  }
 
   //create a boat load of threads or forks
   struct Mission mission[9+9+9];
@@ -76,48 +82,55 @@ int main(int argc, char *argv[])
   for (int i = 0; i < 9; i = i + 1) {
     mission[i].array = solution;
     mission[i].id = i;
+    mission[i].msg = NULL;
     if (use_fork) {
 
     }
     else {
-      pthread_create(&thread[i], NULL, rowGrabber, &mission[i]);
+      pthread_create(&thread[i], NULL, *rowGrabber, (void*) &mission[i]);
     }
   }
 
-  //columns
-  for (int i = 0; i < 9; i = i + 1) {
-    mission[i+9].array = solution;
-    mission[i+9].id = i;
-    if (use_fork) {
+  // //columns
+  // for (int i = 0; i < 9; i = i + 1) {
+  //   mission[i+9].array = solution;
+  //   mission[i+9].id = i;
+  //   mission[i+9].msg = NULL;
+  //   if (use_fork) {
 
-    }
-    else {
-      pthread_create(&thread[i+9], NULL, columnGrabber, &mission[i+9]);
-    }
-  }
+  //   }
+  //   else {
+  //     pthread_create(&thread[i+9], NULL, *columnGrabber, (void*) &mission[i+9]);
+  //   }
+  // }
 
-  //columns
-  for (int i = 0; i < 9; i = i + 1) {
-    mission[i+18].array = solution;
-    mission[i+18].id = i;
-    if (use_fork) {
+  // //columns
+  // for (int i = 0; i < 9; i = i + 1) {
+  //   mission[i+18].array = solution;
+  //   mission[i+18].id = i;
+  //   mission[i+18].msg = NULL;
+  //   if (use_fork) {
 
-    }
-    else {
-      pthread_create(&thread[i+18], NULL, gridGrabber, &mission[i+18]);
-    }
-  }
+  //   }
+  //   else {
+  //     pthread_create(&thread[i+18], NULL, *gridGrabber, (void*) &mission[i+18]);
+  //   }
+  // }
 
   //collect answers
   int valid = 1;
-  for (int i = 0; i < (9+9+9); i = i + 1) {
+  for (int i = 0; i < 9; i = i + 1) {
     if (use_fork) {
 
     }
     else {
-      void* retVal;
-      pthread_join(thread[i], retVal);
-      valid &= *((int*)retVal);
+      pthread_join(thread[i], NULL);
+      int success = mission[i].msg == NULL;
+      valid &= success;
+
+      if (!success) {
+        printf("%s\n", (mission[i].msg));
+      }
     }
   }
 
