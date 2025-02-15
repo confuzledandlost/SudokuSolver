@@ -1,0 +1,11 @@
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IDE-specific settings
+.project
+.classpath
+.settings/
+
