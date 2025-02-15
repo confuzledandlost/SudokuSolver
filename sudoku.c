@@ -56,6 +56,17 @@ int main(int argc, char *argv[])
       printf("We are using worker threads.\n");
   }
 
+  // int testCase1[] = {1,2,3,4,5,6,7,8,9};
+  // int testCase2[] = {1,2,3,4,5,6,7,8,8};
+  // if (checker(testCase1)) 
+  //   printf("case 1 passes\n");
+  // else
+  //   printf("case 1 fails\n");
+  // if (checker(testCase2))
+  //   printf("case 2 fails\n");
+  // else
+  //   printf("case 2 passes\n");
+
 
   //make an array for the solution
   #define BOARDSIZE 81
@@ -91,31 +102,31 @@ int main(int argc, char *argv[])
     }
   }
 
-  // //columns
-  // for (int i = 0; i < 9; i = i + 1) {
-  //   mission[i+9].array = solution;
-  //   mission[i+9].id = i;
-  //   mission[i+9].msg = NULL;
-  //   if (use_fork) {
+  //columns
+  for (int i = 0; i < 9; i = i + 1) {
+    mission[i+9].array = solution;
+    mission[i+9].id = i;
+    mission[i+9].msg = NULL;
+    if (use_fork) {
 
-  //   }
-  //   else {
-  //     pthread_create(&thread[i+9], NULL, *columnGrabber, (void*) &mission[i+9]);
-  //   }
-  // }
+    }
+    else {
+      pthread_create(&thread[i+9], NULL, *columnGrabber, (void*) &mission[i+9]);
+    }
+  }
 
-  // //columns
-  // for (int i = 0; i < 9; i = i + 1) {
-  //   mission[i+18].array = solution;
-  //   mission[i+18].id = i;
-  //   mission[i+18].msg = NULL;
-  //   if (use_fork) {
+  //columns
+  for (int i = 0; i < 9; i = i + 1) {
+    mission[i+18].array = solution;
+    mission[i+18].id = i;
+    mission[i+18].msg = NULL;
+    if (use_fork) {
 
-  //   }
-  //   else {
-  //     pthread_create(&thread[i+18], NULL, *gridGrabber, (void*) &mission[i+18]);
-  //   }
-  // }
+    }
+    else {
+      pthread_create(&thread[i+18], NULL, *gridGrabber, (void*) &mission[i+18]);
+    }
+  }
 
   //collect answers
   int valid = 1;
@@ -129,7 +140,7 @@ int main(int argc, char *argv[])
       valid &= success;
 
       if (!success) {
-        printf("%s\n", (mission[i].msg));
+        printf("%s", (mission[i].msg));
       }
     }
   }

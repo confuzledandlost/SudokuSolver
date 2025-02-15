@@ -24,9 +24,9 @@ void* rowGrabber(void* ptr) {
     }
 
     //temporarily removed the call to checker cause it causes crashes rn
-    // if(checker(rowVals)) {
+    if(checker(rowVals)) {
         // return true;
-    // } else {
+    } else {
 
         //this is how you write a message into the mission struct
         //calculate required size of the buffer (add one for the null terminator)
@@ -35,7 +35,7 @@ void* rowGrabber(void* ptr) {
         a1->msg = malloc(bufSize);
         //write the message in
         sprintf(a1->msg, "Row %d doesn't have the required values.\n", a1->id);
-    // }
+    }
 }
 
 #endif //SUDOKUSOLVER_ROWGRABBER_H

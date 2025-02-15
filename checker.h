@@ -14,7 +14,7 @@ bool checker(int nums[]) {
     for (int i = 0; i < 9; i++) {
 
         // Hold the current number for safe-keeping (and add 1)
-        int curr = nums[i] + 1;
+        int curr = nums[i];
 
         // Check if number is in bounds
         if (curr < 1 || curr > 9) {
