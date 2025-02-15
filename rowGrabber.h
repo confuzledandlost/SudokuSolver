@@ -27,11 +27,11 @@ void* rowGrabber(void* ptr) {
 
         //this is how you write a message into the mission struct
         //calculate required size of the buffer (add one for the null terminator)
-        size_t bufSize = snprintf(NULL, 0, "Row %d doesn't have the required values.\n", a1->id) + 1;
+        size_t bufSize = snprintf(NULL, 0, "Row %d doesn't have the required values.\n", a1->id + 1) + 1;
         //actually allocate that memory
         a1->msg = malloc(bufSize);
         //write the message in
-        sprintf(a1->msg, "Row %d doesn't have the required values.\n", a1->id);
+        sprintf(a1->msg, "Row %d doesn't have the required values.\n", a1->id + 1);
      }
 }
 

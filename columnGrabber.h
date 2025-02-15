@@ -26,9 +26,9 @@ void* columnGrabber(void* ptr) {
     if(!checker(colVals)) {
 
         // If it doesn't check out not, write a message into the a1->msg array
-        size_t bufSize = snprintf(NULL, 0, "Column %d doesn't have the required values.\n", a1->id) + 1;
+        size_t bufSize = snprintf(NULL, 0, "Column %d doesn't have the required values.\n", a1->id + 1) + 1;
         a1->msg = malloc(bufSize);
-        sprintf(a1->msg, "Column %d doesn't have the required values.\n", a1->id);
+        sprintf(a1->msg, "Column %d doesn't have the required values.\n", a1->id + 1);
     }
 }
 
