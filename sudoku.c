@@ -15,13 +15,6 @@
 static int verbose = 0;
 static int use_fork = 0;
 
-// Array mapping subgrid IDs to their corresponding names
-const char* subgridNames[] = {
-    "top left", "top middle", "top right",
-    "middle left", "middle middle", "middle right",
-    "bottom left", "bottom middle", "bottom right"
-};
-
 // This is a simple function to parse the --fork argument.
 // It also supports --verbose, -v
 void parse_args(int argc, char *argv[])
@@ -53,8 +46,14 @@ void parse_args(int argc, char *argv[])
   }
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+  // Array mapping subgrid IDs to their corresponding names
+  const char* subgridNames[] = {
+    "top left", "top middle", "top right",
+    "middle left", "middle middle", "middle right",
+    "bottom left", "bottom middle", "bottom right"
+  };
+
   parse_args(argc, argv);
 
   if (verbose && use_fork) {
