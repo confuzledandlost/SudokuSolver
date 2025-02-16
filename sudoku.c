@@ -66,6 +66,8 @@ int main(int argc, char *argv[]) {
   //make an array for the solution
   #define BOARDSIZE 81
   int solution[BOARDSIZE];
+
+  //threads or pids to track our workers
   pthread_t thread[9+9+9]; //nine rows, columns, grids.
   pid_t p[9+9+9];
 
@@ -82,14 +84,14 @@ int main(int argc, char *argv[]) {
     //   printf(" ");
   }
 
-  //create a boat load of threads or forks
+  //create space to define all our tasks
   struct Mission mission[9+9+9];
 
   //rows
   for (int i = 0; i < 9; i = i + 1) {
-    mission[i].array = solution;
-    mission[i].id = i;
-    mission[i].success = false;
+    mission[i].array = solution;    //point to the input
+    mission[i].id = i;              //0-8 id for the value grabbing algorithm
+    mission[i].success = false;     //whether the values are acceptable
     if (use_fork) {
       p[i] = fork();
       if (p[i] == 0) {
@@ -104,41 +106,42 @@ int main(int argc, char *argv[]) {
 
   //columns
   for (int i = 0; i < 9; i = i + 1) {
-     mission[i+9].array = solution;
-     mission[i+9].id = i;
-     mission[i+9].success = false;
-     if (use_fork) {
-      p[i+9] = fork();
-      if (p[i+9] == 0) {
-        columnGrabber((void*) &mission[i+9]);
-        exit(mission[i+9].success);
-      }
-     }
-     else {
-       pthread_create(&thread[i+9], NULL, *columnGrabber, (void*) &mission[i+9]);
-     }
+    mission[i+9].array = solution;
+    mission[i+9].id = i;
+    mission[i+9].success = false;
+    if (use_fork) {
+    p[i+9] = fork();
+    if (p[i+9] == 0) {
+      columnGrabber((void*) &mission[i+9]);
+      exit(mission[i+9].success);
+    }
+    }
+    else {
+      pthread_create(&thread[i+9], NULL, *columnGrabber, (void*) &mission[i+9]);
+    }
   }
 
-  //columns
+  //grids
   for (int i = 0; i < 9; i = i + 1) {
-     mission[i+18].array = solution;
-     mission[i+18].id = i;
-     mission[i+18].success = false;
-     if (use_fork) {
-      p[i+18] = fork();
-      if (p[i+18] == 0) {
-        gridGrabber((void*) &mission[i+18]);
-        exit(mission[i+18].success);
-      }
-     }
-     else {
-       pthread_create(&thread[i+18], NULL, *gridGrabber, (void*) &mission[i+18]);
-     }
+    mission[i+18].array = solution;
+    mission[i+18].id = i;
+    mission[i+18].success = false;
+    if (use_fork) {
+    p[i+18] = fork();
+    if (p[i+18] == 0) {
+      gridGrabber((void*) &mission[i+18]);
+      exit(mission[i+18].success);
+    }
+    }
+    else {
+      pthread_create(&thread[i+18], NULL, *gridGrabber, (void*) &mission[i+18]);
+    }
    }
 
   //collect answers
   int valid = 1;
   for (int i = 0; i < 27; i = i + 1) {
+    //see if this test passed or not
     int success;
 
     if (use_fork) {
@@ -158,6 +161,7 @@ int main(int argc, char *argv[]) {
       success = mission[i].success;
     }
 
+    //complain about failures
     if (!success) {
       if (i < 9)
         printf("Row %d doesn't have the required values.\n", i + 1);
@@ -169,6 +173,7 @@ int main(int argc, char *argv[]) {
       }
     }
     
+    //track overall success
     valid &= success;
   }
 
