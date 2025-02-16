@@ -6,7 +6,7 @@
 struct Mission {
   int id;
   int* array;
-  char* msg;
+  int success;
 };
 
 #endif

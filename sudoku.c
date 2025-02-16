@@ -14,6 +14,12 @@
 static int verbose = 0;
 static int use_fork = 0;
 
+// Array mapping subgrid IDs to their corresponding names
+const char* subgridNames[] = {
+    "top left", "top middle", "top right",
+    "middle left", "middle middle", "middle right",
+    "bottom left", "bottom middle", "bottom right"
+};
 
 // This is a simple function to parse the --fork argument.
 // It also supports --verbose, -v
@@ -83,12 +89,12 @@ int main(int argc, char *argv[])
   for (int i = 0; i < 9; i = i + 1) {
     mission[i].array = solution;
     mission[i].id = i;
-    mission[i].msg = NULL;
+    mission[i].success = false;
     if (use_fork) {
       p[i] = fork();
       if (p[i] == 0) {
         rowGrabber((void*) &mission[i]);
-        exit(mission[i].msg == NULL);
+        exit(mission[i].success);
       }
     }
     else {
@@ -100,12 +106,12 @@ int main(int argc, char *argv[])
   for (int i = 0; i < 9; i = i + 1) {
      mission[i+9].array = solution;
      mission[i+9].id = i;
-     mission[i+9].msg = NULL;
+     mission[i+9].success = false;
      if (use_fork) {
       p[i+9] = fork();
       if (p[i+9] == 0) {
         columnGrabber((void*) &mission[i+9]);
-        exit(mission[i+9].msg == NULL);
+        exit(mission[i+9].success);
       }
      }
      else {
@@ -117,12 +123,12 @@ int main(int argc, char *argv[])
   for (int i = 0; i < 9; i = i + 1) {
      mission[i+18].array = solution;
      mission[i+18].id = i;
-     mission[i+18].msg = NULL;
+     mission[i+18].success = false;
      if (use_fork) {
       p[i+18] = fork();
       if (p[i+18] == 0) {
         gridGrabber((void*) &mission[i+18]);
-        exit(mission[i+18].msg == NULL);
+        exit(mission[i+18].success);
       }
      }
      else {
@@ -133,6 +139,8 @@ int main(int argc, char *argv[])
   //collect answers
   int valid = 1;
   for (int i = 0; i < 27; i = i + 1) {
+    int success;
+
     if (use_fork) {
       int status;
       waitpid(p[i], &status, NULL);
@@ -142,30 +150,26 @@ int main(int argc, char *argv[])
         exit(-1);
       }
 
-      // printf("%d\n", WEXITSTATUS(status));
-
-      valid &= WEXITSTATUS(status);
-
-      if (!WEXITSTATUS(status)) {
-        if (i < 9)
-          printf("Row %d doesn't have the required values.\n", i + 1);
-        else if (i < 18) {
-          printf("Column %d doesn't have the required values.\n", i % 9 + 1);
-        }
-        else {
-          printf("The %s subgrid doesn't have the required values.\n", subgridNames[i % 9]);
-        }
-      }
+      success = WEXITSTATUS(status);
     }
     else {
       pthread_join(thread[i], NULL);
-      int success = mission[i].msg == NULL;
-      valid &= success;
+      
+      success = mission[i].success;
+    }
 
-      if (!success) {
-        printf("%s", (mission[i].msg));
+    if (!success) {
+      if (i < 9)
+        printf("Row %d doesn't have the required values.\n", i + 1);
+      else if (i < 18) {
+        printf("Column %d doesn't have the required values.\n", i % 9 + 1);
+      }
+      else {
+        printf("The %s subgrid doesn't have the required values.\n", subgridNames[i % 9]);
       }
     }
+    
+    valid &= success;
   }
 
   //tell the user whether they're an idiot

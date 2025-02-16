@@ -22,14 +22,8 @@ void* columnGrabber(void* ptr) {
         colVals[i] = a1->array[i * 9 + colIndex];
     }
 
-    // Pass the column values to the checker function
-    if(!checker(colVals)) {
-
-        // If it doesn't check out not, write a message into the a1->msg array
-        size_t bufSize = snprintf(NULL, 0, "Column %d doesn't have the required values.\n", a1->id + 1) + 1;
-        a1->msg = malloc(bufSize);
-        sprintf(a1->msg, "Column %d doesn't have the required values.\n", a1->id + 1);
-    }
+    // Pass the column values to the checker function, report results
+    a1->success = checker(colVals);
 }
 
 #endif //COLUMNGRABBER_H

@@ -6,14 +6,6 @@
 #include "mission.h"
 #include "checker.h"
 
-// Array mapping subgrid IDs to their corresponding names
-const char* subgridNames[] = {
-    "top left", "top middle", "top right",
-    "middle left", "middle middle", "middle right",
-    "bottom left", "bottom middle", "bottom right"
-};
-
-
 // Function that grabs numbers from an array in a 3x3 subgrid
 // Takes in a void pointer that has an int ID, an array of ints, and array of chars
 void* gridGrabber(void* ptr) {
@@ -31,14 +23,8 @@ void* gridGrabber(void* ptr) {
         }
     }
 
-    // Pass the 3x3 subgrid values to the checker function
-    if(!checker(gridVals)) {
-
-        // If it doesn't check out not, write a message into the a1->msg array
-        size_t bufSize = snprintf(NULL, 0, "The %s subgrid doesn't have the required values.\n", subgridNames[a1->id]) + 1;
-        a1->msg = malloc(bufSize);
-        sprintf(a1->msg, "The %s subgrid doesn't have the required values.\n", subgridNames[a1->id]);
-    }
+    // Pass the 3x3 subgrid values to the checker function, report results
+    a1->success = checker(gridVals);
 }
 
 #endif //GRIDGRABBER_H
