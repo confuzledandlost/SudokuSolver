@@ -6,6 +6,14 @@
 #include "mission.h"
 #include "checker.h"
 
+// Array mapping subgrid IDs to their corresponding names
+const char* subgridNames[] = {
+    "top left", "top middle", "top right",
+    "middle left", "middle middle", "middle right",
+    "bottom left", "bottom middle", "bottom right"
+};
+
+
 // Function that grabs numbers from an array in a 3x3 subgrid
 // Takes in a void pointer that has an int ID, an array of ints, and array of chars
 void* gridGrabber(void* ptr) {
@@ -15,13 +23,6 @@ void* gridGrabber(void* ptr) {
     int startRow = (a1->id / 3) * 3;   // Determine the starting row of the subgrid
     int startCol = (a1->id % 3) * 3;   // Determine the starting column of the subgrid
     int index = 0;   // Index for filling gridVals
-
-    // Array mapping subgrid IDs to their corresponding names
-    const char* subgridNames[] = {
-        "top left", "top middle", "top right",
-        "middle left", "middle middle", "middle right",
-        "bottom left", "bottom middle", "bottom right"
-    };
 
     // Extract values from the 3x3 subgrid
     for (int i = 0; i < 3; i++) {  // Rows within the subgrid

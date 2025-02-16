@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
   #define BOARDSIZE 81
   int solution[BOARDSIZE];
   pthread_t thread[9+9+9]; //nine rows, columns, grids.
+  pid_t p[9+9+9];
 
   //read all the input
   for (int i = 0; i < BOARDSIZE; i = i + 1) {
@@ -84,7 +85,11 @@ int main(int argc, char *argv[])
     mission[i].id = i;
     mission[i].msg = NULL;
     if (use_fork) {
-
+      p[i] = fork();
+      if (p[i] == 0) {
+        rowGrabber((void*) &mission[i]);
+        exit(mission[i].msg == NULL);
+      }
     }
     else {
       pthread_create(&thread[i], NULL, *rowGrabber, (void*) &mission[i]);
@@ -97,6 +102,11 @@ int main(int argc, char *argv[])
      mission[i+9].id = i;
      mission[i+9].msg = NULL;
      if (use_fork) {
+      p[i+9] = fork();
+      if (p[i+9] == 0) {
+        columnGrabber((void*) &mission[i+9]);
+        exit(mission[i+9].msg == NULL);
+      }
      }
      else {
        pthread_create(&thread[i+9], NULL, *columnGrabber, (void*) &mission[i+9]);
@@ -109,7 +119,11 @@ int main(int argc, char *argv[])
      mission[i+18].id = i;
      mission[i+18].msg = NULL;
      if (use_fork) {
-
+      p[i+18] = fork();
+      if (p[i+18] == 0) {
+        gridGrabber((void*) &mission[i+18]);
+        exit(mission[i+18].msg == NULL);
+      }
      }
      else {
        pthread_create(&thread[i+18], NULL, *gridGrabber, (void*) &mission[i+18]);
@@ -120,7 +134,28 @@ int main(int argc, char *argv[])
   int valid = 1;
   for (int i = 0; i < 27; i = i + 1) {
     if (use_fork) {
+      int status;
+      waitpid(p[i], &status, NULL);
 
+      if (!WIFEXITED(status)) {
+        printf("One or more threads errored out.\n");
+        exit(-1);
+      }
+
+      // printf("%d\n", WEXITSTATUS(status));
+
+      valid &= WEXITSTATUS(status);
+
+      if (!WEXITSTATUS(status)) {
+        if (i < 9)
+          printf("Row %d doesn't have the required values.\n", i + 1);
+        else if (i < 18) {
+          printf("Column %d doesn't have the required values.\n", i % 9 + 1);
+        }
+        else {
+          printf("The %s subgrid doesn't have the required values.\n", subgridNames[i % 9]);
+        }
+      }
     }
     else {
       pthread_join(thread[i], NULL);
@@ -128,7 +163,7 @@ int main(int argc, char *argv[])
       valid &= success;
 
       if (!success) {
-        printf("%s\n", (mission[i].msg));
+        printf("%s", (mission[i].msg));
       }
     }
   }
