@@ -9,6 +9,7 @@
 #include "columnGrabber.h"
 #include "gridGrabber.h"
 #include <stdbool.h>
+#include <sys/wait.h>
 
 /* These are the only two global variables allowed in your program */
 static int verbose = 0;
@@ -143,7 +144,7 @@ int main(int argc, char *argv[])
 
     if (use_fork) {
       int status;
-      waitpid(p[i], &status, NULL);
+      waitpid(p[i], &status, (long) NULL);
 
       if (!WIFEXITED(status)) {
         printf("One or more threads errored out.\n");
