@@ -67,10 +67,6 @@ int main(int argc, char *argv[]) {
   #define BOARDSIZE 81
   int solution[BOARDSIZE];
 
-  //threads or pids to track our workers
-  pthread_t thread[9+9+9]; //nine rows, columns, grids.
-  pid_t p[9+9+9];
-
   //read all the input
   for (int i = 0; i < BOARDSIZE; i = i + 1) {
     scanf("%d", &solution[i]);
@@ -84,8 +80,15 @@ int main(int argc, char *argv[]) {
     //   printf(" ");
   }
 
+  //nine rows, columns, grids.
+  #define WORKERCOUNT 27
+
+  //threads or pids to track our workers
+  pthread_t thread[WORKERCOUNT];
+  pid_t p[WORKERCOUNT];
+
   //create space to define all our tasks
-  struct Mission mission[9+9+9];
+  struct Mission mission[WORKERCOUNT];
 
   //rows
   for (int i = 0; i < 9; i = i + 1) {
@@ -140,7 +143,7 @@ int main(int argc, char *argv[]) {
 
   //collect answers
   int valid = 1;
-  for (int i = 0; i < 27; i = i + 1) {
+  for (int i = 0; i < WORKERCOUNT; i = i + 1) {
     //see if this test passed or not
     int success;
 
