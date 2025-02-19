@@ -11,7 +11,7 @@
 >> Fill in the names and email addresses of your group members.
 
 Bo Thompson <thompsonbo@sonoma.edu>
-FirstName LastName <email@domain.example>
+Brandon Robinson <robinsonb@sonoma.edu>
 
 ---- PRELIMINARIES ----
 
@@ -51,7 +51,7 @@ Each worker gets a (void*) casted pointer to its unique Mission.
 >> A3: Briefly describe the function(s) run by each worker. Explain
 >> if you could reduce the number of functions, by generalizing each
 >> problem in some way.
-Workers are split up into three groups. One group executes rowGrabber(), one executes columnGrabber(), and one executes gridGrabber(). All three functions read from the user-supplied input to collect the values which need to be checked, and all three functions pass that collection to reader() to ensure that all required digits are represented.
+Workers are split up into three groups. One group executes rowGrabber(), one executes columnGrabber(), and one executes gridGrabber(). All three functions read from the user-supplied input to collect the values which need to be checked, and all three functions pass that collection to checker() to ensure that all required digits are represented.
 There doesn't seem to be any way to reduce the number of functions without either duplicating the logic in checker() or moving the _Grabber() logic into main().
 
 ---- SYNCHRONIZATION ----
@@ -137,11 +137,16 @@ the quarter.
 
 >> In your opinion, was this assignment, or any one of the problems
 >> in it, too easy or too hard?  Did it take too long or too little time?
-No, very simple.
+No, very simple. A a benefit to our group (that others might not have been so lucky with)
+is the fact that we have relatively high levels of work ethic and comfort with coding in groups.
+I believe that if placed in a group with less cohesion, the work would have been less evenly
+distributed, thus making the project more difficult and taking more time.
 
 >> Did you find that working on a particular part of the assignment gave
 >> you greater insight into some aspect of OS design?
 Not really, this is just a good way to ensure that we understand what was already gone over in class.
+Implementing the actual threading process in code was definitely interesting, it's great to see it in action
+when running the program in terminal with the top and ps commands.
 
 >> Is there some particular fact or hint we should give students in
 >> future quarters to help them solve the problems?  Conversely, did you
@@ -149,3 +154,5 @@ Not really, this is just a good way to ensure that we understand what was alread
 "static" is a term that I think most of us are used to thinking of as "not dynamically allocated" since we've never had an assignment that calls for use of the static keyword. A brief disambiguation could help.
 
 >> Any other comments?
+Fun little project! Could potentially have been a solo project with the same amount of time,
+or a 2 person (max) project with slightly less time. Or maybe we just work fast lol
