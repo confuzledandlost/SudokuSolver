@@ -22,6 +22,7 @@ Sean Belingheri <belingheri@sonoma.edu>
 >> Please cite any offline or online sources you consulted while
 >> preparing your submission, other than the Pintos documentation, course
 >> text, lecture notes, and course staff.
+
 https://gist.github.com/ankurs/179778
 https://web.stanford.edu/class/archive/cs/cs110/cs110.1182/autumn-2017/lectures/05-multiprocessing-reap-as-they-exit.html#(1)
 http://web.stanford.edu/~hhli/CS110Notes/CS110NotesCollection/Topic%203%20Multithreading%20(1).html
@@ -34,36 +35,49 @@ http://web.stanford.edu/~hhli/CS110Notes/CS110NotesCollection/Topic%203%20Multit
 >> A1: Copy here the declaration of each new `struct',
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
+
+Our only struct is used to pass information to workers (which worker threads modify to send success/failure back to the main thread).
+
 struct Mission {
   int id;
   int* array;
   int success;
 };
-Used to pass information to workers (which worker threads modify to send success/failure back to the main thread)
-No globals, no static variables.
+
+No extra global variables or static variables were created (other than what was provided in sample code).
 
 ---- ALGORITHMS ----
 
 >> A2: Briefly describe how you communicated to each worker thread
 >> the work it should perform, as a void *
-A Mission is created for each worker which specifies the address of the input array, specifies which of the 9 rows/columns/subgrids need to be checked, and has room for results to be communicated back by threads.
-Each worker gets a (void*) casted pointer to its unique Mission.
+
+Each worker is has a new Mission struct created created and assigned that specifies the address of the input array, which of the 9 rows/columns/subgrids need to be checked, and a message block for communication back to the main thread. These Missions structs are passed to each worker with a casted void *.
 
 >> A3: Briefly describe the function(s) run by each worker. Explain
 >> if you could reduce the number of functions, by generalizing each
 >> problem in some way.
-Workers are split up into three groups. One group executes rowGrabber(), one executes columnGrabber(), and one executes gridGrabber(). All three functions read from the user-supplied input to collect the values which need to be checked, and all three functions pass that collection to checker() to ensure that all required digits are represented.
+
+Workers are split up into three groups. One group executes rowGrabber(), one executes columnGrabber(), and one executes gridGrabber(). 
+
+All three functions read from the user-supplied input to collect the values which need to be checked, and all three functions pass that collection to checker() to ensure that all required digits are represented.
+
 There doesn't seem to be any way to reduce the number of functions without either duplicating the logic in checker() or moving the _Grabber() logic into main().
 
 ---- SYNCHRONIZATION ----
 
 >> A4: Explain how the main thread knows when all the worker
 >> threads have completed their work.
+
 After spawning all workers, the main thread calls pthread_join() for each thread to await results.
 
 >> A5: Explain how the main thread knows when a particular worker
 >> thread has reported a property is missing.
-Threads write the success or failure of their check into their mission's success flag, which gets read by the main thread.
+
+Threads write the success or failure of their check into their mission's success flag, which gets read by the main thread. 
+
+If the worker's mission block is empty (NULL) then the main thread knows that block finished sucessfully, and doesn't print an error. 
+
+If the worker thread DOES have a message, then the main thread print's the specific message and flags the Sudoku solution as a false if even on worker reports a failure.
 
 ---- RATIONALE ----
 
@@ -71,13 +85,16 @@ Threads write the success or failure of their check into their mission's success
 >> too serialized, and unable to take advantage of parallelism.
 >> Explain why you chose your design, arguing how it is highly 
 >> parallel, while the access to each resource is safe and deadlock free.
+
 The main thread's only responsibility after taking input is to spawn workers and read their results. It completely spawns all workers before reading their results, ensuring that workers are all able to function simultaneously for maximum parallelism.
+
 No workers make any system calls, and the only writes they perform are to their own static variables or to their Mission's success flag, preventing any chance of collision or deadlock.
 
 >> A7: Explain how you ensured that your program has no resource leaks.
 >> List all the free-able resources and, for each, explain how you
 >> free them at the earliest possible time.
-No free-able resources.
+
+No free-able resources observed.
 
 
                FORKING SUDOKU CHECKER
@@ -88,29 +105,35 @@ No free-able resources.
 >> B1: Copy here the declaration of each new `struct',
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
+
+Our only struct is used to pass information to workers (which worker threads modify to send success/failure back to the main thread).
+
 struct Mission {
   int id;
   int* array;
   int success;
 };
-Used to pass information to workers (which worker threads modify to send success/failure back to the main thread)
-No globals, no static variables.
+
+No extra global variables or static variables were created (other than what was provided in sample code).
 
 ---- ALGORITHMS ----
 
 >> B2: Briefly describe if the method of communicating to each child
 >> thread or the function(s) run by each child was different than in
 >> your threaded implementation.
+
 No significant difference. The same function is executed and its result is collected the same way, but this time is fed into a call to exit()
 
 ---- SYNCHRONIZATION ----
 
 >> B3: Explain how the parent process knows when all the worker
 >> threads have completed their work.
+
 After spawning all workers, the main thread calls waitpid() for each thread to await results.
 
 >> B4: Explain how the parent process knows when a particular worker
 >> thread has reported a property is missing.
+
 The status retrieved from waitpid is decoded through WEXITSTATUS(). This expression evaluates to either 1 for success or 0 for failure.
 
 ---- RATIONALE ----
@@ -118,12 +141,14 @@ The status retrieved from waitpid is decoded through WEXITSTATUS(). This express
 >> B5: Explain how you ensured that your program has no resource leaks.
 >> List all the free-able resources and, for each, explain how you
 >> free them at the earliest possible time.
+
 As above, no free-able resources.
 
 >> B6: Overzealous use of synchronization can cause code to become
 >> too serialized, and unable to take advantage of parallelism.
 >> Explain why you chose your design, arguing how it is highly 
 >> parallel, while the access to each resource is safe and deadlock free.
+
 No workers make any system calls, preventing any chance of collision or deadlock.
 
 
@@ -138,22 +163,30 @@ the quarter.
 
 >> In your opinion, was this assignment, or any one of the problems
 >> in it, too easy or too hard?  Did it take too long or too little time?
-No, very simple. A a benefit to our group (that others might not have been so lucky with)
+
+No, very simple. 
+
+A benefit to our group (that others might not have been so lucky with)
 is the fact that we have relatively high levels of work ethic and comfort with coding in groups.
-I believe that if placed in a group with less cohesion, the work would have been less evenly
+
+We believe that if placed in a group with less cohesion, the work would have been less evenly
 distributed, thus making the project more difficult and taking more time.
 
 >> Did you find that working on a particular part of the assignment gave
 >> you greater insight into some aspect of OS design?
+
 Not really, this is just a good way to ensure that we understand what was already gone over in class.
+
 Implementing the actual threading process in code was definitely interesting, it's great to see it in action
 when running the program in terminal with the top and ps commands.
 
 >> Is there some particular fact or hint we should give students in
 >> future quarters to help them solve the problems?  Conversely, did you
 >> find any of our guidance to be misleading?
-"static" is a term that I think most of us are used to thinking of as "not dynamically allocated" since we've never had an assignment that calls for use of the static keyword. A brief disambiguation could help.
+
+The term "static" is something that I think most of us are used to thinking of as "not dynamically allocated" since we've never had an assignment that calls for use of the static keyword. A brief disambiguation could help.
 
 >> Any other comments?
+
 Fun little project! Could potentially have been a solo project with the same amount of time,
-or a 2 person (max) project with slightly less time. Or maybe we just work fast lol
+or a 2 person (max) project with slightly less time. Or maybe we just work fast!
