@@ -9,3 +9,5 @@
 .classpath
 .settings/
 
+# Test files
+*.sh
